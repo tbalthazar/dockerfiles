@@ -50,4 +50,4 @@ RUN git clone https://github.com/rbenv/rbenv.git "$HOME/.rbenv" \
   && git clone https://github.com/rbenv/ruby-build.git $HOME/.rbenv/plugins/ruby-build \
   && $HOME/.rbenv/bin/rbenv install 2.5.3 \
   && $HOME/.rbenv/bin/rbenv global 2.5.3 \
-  gem install bundler rails --no-rdoc --no-ri
+  && gem install bundler rails --no-rdoc --no-ri 
