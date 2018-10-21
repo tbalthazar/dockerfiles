@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:buster-slim
 LABEL maintainer "Thomas Balthazar <thomas@balthazar.info>"
 
 ENV DEBIAN_FRONTEND noninteractive
