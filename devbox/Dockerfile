@@ -52,3 +52,5 @@ RUN git clone https://github.com/rbenv/rbenv.git "$HOME/.rbenv" \
   && $HOME/.rbenv/bin/rbenv global 2.5.3 \
   && $HOME/.rbenv/shims/gem install bundler --no-rdoc --no-ri \
   && $HOME/.rbenv/shims/gem install rails --no-rdoc --no-ri 
+
+ENV PATH=/gems/bin:$PATH
