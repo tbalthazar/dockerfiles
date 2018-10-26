@@ -32,3 +32,23 @@ $ docker run --rm -it \
   -v /tmp/gems:/gems \
   hello-rails
 ```
+
+Example Dockerfile for the Rails app:
+
+```
+FROM ruby:2.5.3
+LABEL maintainer=thomas@balthazar.info
+
+COPY Gemfile* /usr/src/app/
+WORKDIR /usr/src/app
+
+ENV BUNDLE_PATH /gems
+ENV GEM_HOME /gems
+ENV PATH "${BUNDLE_PATH}/bin:${PATH}"
+RUN apt-get update && apt-get install -y \
+  nodejs \
+  --no-install-recommends \
+  && bundle install
+COPY . /usr/src/app
+CMD ["rails", "s", "-b", "0.0.0.0"]
+```
