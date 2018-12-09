@@ -32,7 +32,7 @@ $ docker run --rm -it \
   -v $(pwd):/usr/src/app \
   -v /tmp/gems:/gems \
   -h hello-rails \
-  hello-rails
+  tbalthazar/hello-rails
 ```
 
 Example Dockerfile for the Rails app:
