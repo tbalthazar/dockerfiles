@@ -6,6 +6,33 @@
 $ docker build -t tbalthazar/devbox:0.1 .
 ```
 
+## Run with access to Docker from host
+
+```
+$ docker run --rm -it \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -h devbox \
+  -u $UID:$(stat -c %g /var/run/docker.sock) \
+  --name devbox
+  devbox
+```
+
+By giving it the same group id as the docker group on the host, we make sure the user can run `docker` without sudo from the container. (https://medium.com/@mccode/understanding-how-uid-and-gid-work-in-docker-containers-c37a01d01cf, https://medium.com/@mccode/processes-in-containers-should-not-run-as-root-2feae3f0df3b)
+
+## Run the container to edit a Rails project
+
+```
+$ docker run --rm -it \
+  -h devbox \
+  -u $UID:$(stat -c %g /var/run/docker.sock) \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /home/tb/Code/sites/byrecords.com:/code \
+  -v /tmp/gems:/gems \
+  -e BUNDLE_PATH=/gems \
+  -e GEM_HOME=/gems \
+  -p 3000:3000 devbox
+```
+
 ## Run
 
 ```
