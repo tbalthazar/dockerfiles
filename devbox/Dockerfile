@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y \
   libgdbm6 \
   libgdbm-dev \
 	--no-install-recommends \
-  && rm -rf /var/lib/apt/lists/* \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen en_US.UTF-8 \
   && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
