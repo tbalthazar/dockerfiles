@@ -1,0 +1,22 @@
+#!/bin/bash
+
+running=$(docker inspect -f "{{.State.Running}}" devbox 2> /dev/null)
+
+if [[ $running ]]
+then
+  echo "running"
+else
+  echo "not running"
+  docker run --rm -d \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /:/home/host_root \
+    -v /home/tb:/home/host_home \
+    -h devbox \
+    -u $UID:$(stat -c %g /var/run/docker.sock) \
+    --name devbox \
+    devbox \
+    bash -c "while true; do echo 'running' && sleep 300; done" \
+    2>&1 > /dev/null
+fi
+
+docker exec -it devbox bash
