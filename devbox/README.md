@@ -8,6 +8,8 @@ $ docker build -t tbalthazar/devbox:0.1 .
 
 ## Run with access to Docker from host
 
+Remark: on macOS, the `stat` command should use the `-c` flag instead of the `-f` one.
+
 ```
 $ docker run --rm -it \
   -v /var/run/docker.sock:/var/run/docker.sock \
@@ -16,6 +18,19 @@ $ docker run --rm -it \
   --name devbox \
   devbox
 ```
+
+## Run in detached mode
+
+```
+$ docker run --rm -d \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -h devbox \
+  -u $UID:$(stat -c %g /var/run/docker.sock) \
+  --name devbox \
+  devbox \
+  bash -c "while true; do echo 'running' && sleep 300; done"
+```
+
 
 By giving it the same group id as the docker group on the host, we make sure the user can run `docker` without sudo from the container. (https://medium.com/@mccode/understanding-how-uid-and-gid-work-in-docker-containers-c37a01d01cf, https://medium.com/@mccode/processes-in-containers-should-not-run-as-root-2feae3f0df3b)
 
