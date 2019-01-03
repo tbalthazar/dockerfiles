@@ -12,8 +12,8 @@ $ docker build -t tbalthazar/devbox:0.1 .
 $ docker run --rm -it \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -h devbox \
-  -u $UID:$(stat -c %g /var/run/docker.sock) \
-  --name devbox
+  -u $UID:$(stat -f %g /var/run/docker.sock) \
+  --name devbox \
   devbox
 ```
 
