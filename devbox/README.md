@@ -8,11 +8,13 @@ $ docker build -t tbalthazar/devbox:0.1 .
 
 ## Run with access to Docker from host
 
+Remark: on macOS, the `stat` command should use the `-c` flag instead of the `-f` one.
+
 ```
 $ docker run --rm -it \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -h devbox \
-  -u $UID:$(stat -c %g /var/run/docker.sock) \
+  -u $UID:$(stat -f %g /var/run/docker.sock) \
   --name devbox \
   devbox
 ```
