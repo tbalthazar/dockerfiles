@@ -3,6 +3,7 @@ FROM alpine
 RUN apk --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
   --no-cache add \
   curl \
+  ffmpeg \
   python
 
 RUN curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl \
