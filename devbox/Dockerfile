@@ -6,6 +6,8 @@ ENV LANG en_US.utf8
 ENV USER user
 ENV HOME /home/$USER
 ENV RUBY_VERSION 2.6.1
+ENV GO_VERSION 1.11.5
+ENV GO_ARCHIVE go$GO_VERSION.linux-amd64.tar.gz
 
 RUN apt-get update && apt-get install -y \
   apt-transport-https \
@@ -49,6 +51,10 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-c
   -o /usr/local/bin/docker-compose \
   && chmod +x /usr/local/bin/docker-compose
 
+RUN curl -o /tmp/$GO_ARCHIVE https://dl.google.com/go/$GO_ARCHIVE \
+  && tar -C /usr/local -xzf /tmp/$GO_ARCHIVE \
+  && rm /tmp/$GO_ARCHIVE
+
 WORKDIR $HOME
 USER $USER
 
@@ -70,15 +76,3 @@ RUN git clone https://github.com/tbalthazar/dotfiles.git \
   && bin/install dotfiles
 
 ENV PATH=/gems/bin:$PATH
-
-
-USER root
-
-ENV GO_VERSION 1.11.5
-ENV GO_ARCHIVE go$GO_VERSION.linux-amd64.tar.gz
-RUN echo https://dl.google.com/go/$GO_ARCHIVE
-RUN curl -o /tmp/$GO_ARCHIVE https://dl.google.com/go/$GO_ARCHIVE \
-  && tar -C /usr/local -xzf /tmp/$GO_ARCHIVE \
-  && rm /tmp/$GO_ARCHIVE
-
-USER $USER
