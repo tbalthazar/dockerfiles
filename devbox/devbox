@@ -11,10 +11,11 @@ else
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /:/home/host_root \
     -v /home/tb:/home/host_home \
+    -v $GOPATH:/home/user/Code/go \
     -h devbox \
     -u $UID:$(stat -c %g /var/run/docker.sock) \
     --name devbox \
-    devbox \
+    tbalthazar/devbox \
     bash -c "while true; do echo 'running' && sleep 300; done" \
     2>&1 > /dev/null
 fi

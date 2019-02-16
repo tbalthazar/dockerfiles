@@ -5,16 +5,16 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LANG en_US.utf8
 ENV USER user
 ENV HOME /home/$USER
-ENV RUBY_VERSION 2.6.0
+ENV RUBY_VERSION 2.6.1
 
 RUN apt-get update && apt-get install -y \
   apt-transport-https \
   ca-certificates \
-	curl \
+  curl \
   git \
-	locales \
+  locales \
   man \
-	vim-nox \
+  vim-nox \
   libpq-dev \
   nodejs \
   tmux \
@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y \
   libffi-dev \
   libgdbm6 \
   libgdbm-dev \
-	--no-install-recommends \
+  --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen en_US.UTF-8 \
@@ -67,7 +67,18 @@ RUN git clone https://github.com/rbenv/rbenv.git "$HOME/.rbenv" \
 
 RUN git clone https://github.com/tbalthazar/dotfiles.git \
   && cd dotfiles \
-  && git checkout v2 \
   && bin/install dotfiles
 
 ENV PATH=/gems/bin:$PATH
+
+
+USER root
+
+ENV GO_VERSION 1.11.5
+ENV GO_ARCHIVE go$GO_VERSION.linux-amd64.tar.gz
+RUN echo https://dl.google.com/go/$GO_ARCHIVE
+RUN curl -o /tmp/$GO_ARCHIVE https://dl.google.com/go/$GO_ARCHIVE \
+  && tar -C /usr/local -xzf /tmp/$GO_ARCHIVE \
+  && rm /tmp/$GO_ARCHIVE
+
+USER $USER
