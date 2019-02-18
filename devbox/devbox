@@ -8,12 +8,12 @@ then
 else
   echo "not running"
   docker run --rm -d \
-    -v /var/run/docker.sock:/var/run/docker.sock \
     -v /:/home/host_root \
     -v /home/tb:/home/host_home \
     -v $GOPATH:/home/user/Code/go \
+    -v $HOME/.netrc:/home/user/.netrc \
     -h devbox \
-    -u $UID:$(stat -c %g /var/run/docker.sock) \
+    -u $UID:$(id -g) \
     --name devbox \
     tbalthazar/devbox \
     bash -c "while true; do echo 'running' && sleep 300; done" \
