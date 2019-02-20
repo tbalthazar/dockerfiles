@@ -1,0 +1,10 @@
+#!/bin/bash
+
+docker run --rm -it \
+  -u $UID:$(id -g) \
+  -v $PWD:/pics \
+  -w /pics \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -e DISPLAY=unix$DISPLAY \
+  tbalthazar/sxiv \
+  sxiv $@
