@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker run --rm -it \
+  -v "$PWD":/md2notion \
+  -w /md2notion \
+  tbalthazar/md2notion \
+  python3 -m md2notion.upload $@
