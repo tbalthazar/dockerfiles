@@ -1,0 +1,13 @@
+#!/bin/bash
+
+docker run --rm \
+  -p 5432:5432 \
+  -v /tmp/pg-vol:/var/lib/postgresql/data \
+  -v /tmp/walg:/tmp/walg \
+  -e POSTGRES_HOST_AUTH_METHOD=trust \
+  -e WALG_FILE_PREFIX=/tmp/walg \
+  --name pg \
+  tbalthazar/pg-wal-g \
+  -c archive_mode=yes \
+  -c archive_command='wal-g wal-push %p' \
+  -c archive_timeout=60
