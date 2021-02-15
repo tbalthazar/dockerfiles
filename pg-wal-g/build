@@ -1,1 +1,0 @@
-docker build --no-cache --build-arg WALG_VERSION=v0.2.19 -t tbalthazar/pg-wal-g .

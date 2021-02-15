@@ -11,3 +11,8 @@ docker run --rm \
   -c archive_mode=yes \
   -c archive_command='wal-g wal-push %p' \
   -c archive_timeout=60
+
+# or in docker-compose:
+#  db:
+#    image: {{ nextcloud_db_docker_image }}
+#    command: ["-c", "archive_mode=on", "-c", "archive_command=wal-g wal-push %p", "-c", "archive_timeout=60"]

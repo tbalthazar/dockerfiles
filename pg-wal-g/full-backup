@@ -4,7 +4,6 @@ docker exec -it \
   -e PGUSER=postgres \
   pg /wal-g/full-backup.sh
 
--- 
 
-
-docker-compose exec -e PGUSER=nextcloud -- db /wal-g/full-backup.sh
+# or in docker-compose:
+# docker-compose exec -e PGUSER=nextcloud -- db /wal-g/full-backup.sh

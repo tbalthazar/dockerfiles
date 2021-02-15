@@ -1,0 +1,11 @@
+#!/bin/bash
+
+WALG_VERSION=v0.2.19
+TAG=tbalthazar/pg-wal-g
+
+docker build \
+  --no-cache \
+  --build-arg WALG_VERSION=$WALG_VERSION \
+  -t $TAG .
+
+docker push $TAG
