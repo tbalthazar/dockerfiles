@@ -1,8 +1,32 @@
 # Postgres Docker image with Wal-g configured
 
-- the image is built from postgres:13, with wal-g added
-- the container must be started with the appropriate pg config args so that wal-g is configured in the container
-- I still have to find a way to run a cron to perform a full backup
-- the restore script outlines the steps required to restore from a backup:
-  - run the restore script from inside the container (it fetches the backup and touch the recovery file)
-  - run postgres with the appropriate pg config args to restore things
+## Full backup
+
+Has to be scheduled in a cron job:
+
+```shell
+docker-compose exec -e PGUSER=nextcloud -- db /wal-g/full-backup.sh
+```
+
+## Restore
+
+```shell
+docker-compose down
+rm -Rf /mnt/xyz/nextcloud/db/var/lib/postgresql/data/*
+docker-compose run --rm -- db /wal-g/restore.sh
+
+# https://www.postgresql.org/docs/13/runtime-config-wal.html#RUNTIME-CONFIG-WAL-ARCHIVE-RECOVERY
+PIT='2021-02-20 17:13:46'
+docker-compose run --rm -- db \
+  -c restore_command='wal-g wal-fetch %f %p' \
+  -c recovery_target_time="$PIT" \
+  -c recovery_target_action='promote' \
+  -c recovery_end_command='pg_ctl stop'
+
+docker-compose up
+# verify everything works
+
+docker-compose exec -- db wal-g delete everything --confirm
+docker-compose exec -- db /wal-g/full-backup.sh
+docker-compose exec -- db wal-g wal-verify
+```
