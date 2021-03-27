@@ -12,11 +12,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      WALG_VERSION: v0.2.19
     steps:
       - uses: actions/checkout@v2
 
       - name: Build the Docker image
-        run: docker build -t tbalthazar/pg-wal-g:latest pg-wal-g
+        run: docker build -t tbalthazar/pg-wal-g:latest pg-wal-g --no-cache --build-arg WALG_VERSION=$WALG_VERSION
         
       - name: Log in to registry
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "tbalthazar" --password-stdin
