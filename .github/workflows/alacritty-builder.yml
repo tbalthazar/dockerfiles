@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build the Docker image
-        run: docker build -t tbalthazar/alacritty-builder:latest
+        run: docker build -t tbalthazar/alacritty-builder:latest -f alacritty-builder/Dockerfile
         
       - name: Log in to registry
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "tbalthazar" --password-stdin
