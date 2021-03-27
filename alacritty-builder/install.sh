@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 target=$PWD/target
 mnt=/mnt/alacritty
 mkdir -p $target
