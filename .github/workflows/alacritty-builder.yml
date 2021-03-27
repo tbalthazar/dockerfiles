@@ -1,0 +1,30 @@
+name: Build Alacritty builder image
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+    paths:
+    - alacritty-builder 
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Build the Docker image
+        run: docker build -t tbalthazar/alacritty-builder:latest
+        
+      - name: Log in to registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "tbalthazar" --password-stdin
+        
+      - name: Push image
+        run: docker push tbalthazar/alacritty-builder:latest
+
