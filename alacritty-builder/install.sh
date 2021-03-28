@@ -1,11 +1,11 @@
 #!/bin/bash
 
-target=$PWD/target
+target=/tmp/alacritty-target
 mnt=/mnt/alacritty
 mkdir -p $target
 
 docker run \
-  --rm -it \
+  --rm \
   -v $target:$mnt \
   tbalthazar/alacritty-builder
 
