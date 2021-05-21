@@ -1,0 +1,27 @@
+name: Build hpa-example image
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+    - "hpa-example/*"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_TARGET_PLATFORM: linux/arm/v7 
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build the Docker image
+        run: docker build -t tbalthazar/hpa-example:latest hpa-example
+        
+      - name: Log in to registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "tbalthazar" --password-stdin
+        
+      - name: Push image
+        run: docker push tbalthazar/hpa-example:arm
