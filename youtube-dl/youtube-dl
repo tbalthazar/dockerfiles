@@ -4,4 +4,4 @@ docker run --rm -it \
   -v "$PWD":/downloads \
   -w /downloads \
   tbalthazar/youtube-dl \
-  youtube-dl $@
+  yt-dlp $@
