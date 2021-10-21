@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WALG_VERSION=v0.2.19
+WALG_VERSION=v1.1
 TAG=tbalthazar/pg-wal-g
 
 docker build \
