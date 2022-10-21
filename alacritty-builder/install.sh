@@ -4,10 +4,12 @@ target=/tmp/alacritty-target
 mnt=/mnt/alacritty
 mkdir -p $target
 
+image=tbalthazar/alacritty-builder
+docker pull $image
 docker run \
   --rm \
   -v $target:$mnt \
-  tbalthazar/alacritty-builder
+  $image
 
 # Terminfo - `infocmp alacritty` to confirm it worked
 sudo tic -xe alacritty,alacritty-direct $target/alacritty.info
