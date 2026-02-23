@@ -34,4 +34,4 @@ ENV PATH="/home/user/.local/bin:${PATH}"
 WORKDIR /workspace
 
 # Run as user (simpler and more secure)
-CMD ["/bin/bash"]
+CMD ["claude"]
