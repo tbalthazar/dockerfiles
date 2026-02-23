@@ -5,6 +5,8 @@
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -50,14 +52,7 @@ CONTAINER_NAME="claude-dev"
 if ! docker image inspect "$IMAGE_NAME" >/dev/null 2>&1; then
     echo -e "${YELLOW}Docker image not found. Building $IMAGE_NAME...${NC}"
     
-    # Check if Dockerfile exists in current directory
-    if [ ! -f "Dockerfile" ]; then
-        echo -e "${RED}Error: Dockerfile not found in current directory${NC}"
-        echo "Please make sure Dockerfile is in the same directory as this script"
-        exit 1
-    fi
-    
-    docker build -t "$IMAGE_NAME" .
+    docker build -t "$IMAGE_NAME" "$SCRIPT_DIR"
     echo -e "${GREEN}Docker image built successfully${NC}"
 fi
 
