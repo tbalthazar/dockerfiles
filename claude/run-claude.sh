@@ -35,13 +35,6 @@ if [ ! -d "$CLAUDE_CONFIG_DIR" ]; then
     mkdir -p "$CLAUDE_CONFIG_DIR"
 fi
 
-# Create a stable machine-id for the container (persisted on host so OAuth tokens survive restarts)
-MACHINE_ID_FILE="$CLAUDE_CONFIG_DIR/machine-id"
-if [ ! -f "$MACHINE_ID_FILE" ]; then
-    cat /proc/sys/kernel/random/uuid | tr -d '-' > "$MACHINE_ID_FILE"
-    echo -e "${YELLOW}Created stable machine-id for container${NC}"
-fi
-
 # ~/.claude.json (in home root, not inside ~/.claude/) holds onboarding state, OAuth account,
 # theme, and other top-level config — must be persisted separately
 CLAUDE_JSON_FILE="$HOME/.claude.json"
@@ -79,7 +72,6 @@ docker run -it --rm \
     -v "$PROJECT_PATH:/workspace:rw" \
     -v "$CLAUDE_CONFIG_DIR:/home/user/.claude:rw" \
     -v "$CLAUDE_JSON_FILE:/home/user/.claude.json:rw" \
-    -v "$MACHINE_ID_FILE:/etc/machine-id:ro" \
     -w /workspace \
     "$IMAGE_NAME"
 
