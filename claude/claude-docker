@@ -48,12 +48,10 @@ fi
 IMAGE_NAME="claude-code-dev"
 CONTAINER_NAME="claude-dev"
 
-# Check if Docker image exists, if not build it
+# Check if Docker image exists
 if ! docker image inspect "$IMAGE_NAME" >/dev/null 2>&1; then
-    echo -e "${YELLOW}Docker image not found. Building $IMAGE_NAME...${NC}"
-    
-    docker build -t "$IMAGE_NAME" "$SCRIPT_DIR"
-    echo -e "${GREEN}Docker image built successfully${NC}"
+    echo -e "${RED}Error: Docker image '$IMAGE_NAME' not found. Run ./build.sh first.${NC}"
+    exit 1
 fi
 
 echo -e "${GREEN}Starting Claude Code container${NC}"
