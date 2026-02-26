@@ -45,14 +45,12 @@ if [ ! -f "$CLAUDE_JSON_FILE" ]; then
 fi
 
 # Docker image and container names (single container for all projects)
-IMAGE_NAME="claude-code-dev"
+IMAGE_NAME="tbalthazar/claude-code-dev"
 CONTAINER_NAME="claude-dev"
 
-# Check if Docker image exists
-if ! docker image inspect "$IMAGE_NAME" >/dev/null 2>&1; then
-    echo -e "${RED}Error: Docker image '$IMAGE_NAME' not found. Run ./build.sh first.${NC}"
-    exit 1
-fi
+# Pull the latest image from Docker Hub
+echo -e "${YELLOW}Pulling $IMAGE_NAME from Docker Hub...${NC}"
+docker pull "$IMAGE_NAME"
 
 echo -e "${GREEN}Starting Claude Code container${NC}"
 echo -e "Project path: ${GREEN}$PROJECT_PATH${NC}"
