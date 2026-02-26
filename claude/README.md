@@ -5,7 +5,8 @@ Run Claude Code in an isolated Docker container while using Neovim on your local
 ## Files
 
 - `Dockerfile` - Defines the Claude Code container image using native installation with a non-root user
-- `run-claude.sh` - Script to run Claude Code with mounted project and credentials
+- `claude-docker` - Script to run Claude Code with mounted project and credentials
+- `build-and-push.sh` - Script to build the image and push it to Docker Hub (maintainers only)
 
 ## How It Works
 
@@ -14,32 +15,22 @@ The Dockerfile creates a non-root user (`user`) and installs Claude Code as that
 - Your credentials mount to `/home/user/.claude/` (matching the user's home)
 - The container always runs as the `user` account (more secure)
 
+The pre-built image is available on Docker Hub as `tbalthazar/claude-code-dev` and is pulled automatically when you run `claude-docker`.
+
 ## Setup
 
-### 1. Build the Docker Image (Optional - script does this automatically)
+### 1. Make Script Executable
 
 ```bash
-docker build -t claude-code-dev .
+chmod +x claude-docker
 ```
 
-The build process:
-1. Creates a `user` account with home directory
-2. Switches to that user
-3. Runs the official install script (installs to `/home/user/.local/bin/claude`)
-4. Verifies the binary was created successfully
-
-### 2. Make Script Executable
-
-```bash
-chmod +x run-claude.sh
-```
-
-### 3. Authenticate Claude (First Time Only)
+### 2. Authenticate Claude (First Time Only)
 
 On first run, you'll need to authenticate Claude Code:
 
 ```bash
-./run-claude.sh /path/to/your/project
+./claude-docker /path/to/your/project
 
 # Inside the container:
 claude
@@ -53,11 +44,11 @@ claude
 ### Start Claude Code
 
 ```bash
-./run-claude.sh /path/to/your/project
+./claude-docker /path/to/your/project
 ```
 
 This will:
-- Build the Docker image if it doesn't exist
+- Pull the latest `tbalthazar/claude-code-dev` image from Docker Hub
 - Start a fresh container with `--rm` (auto-cleanup on exit)
 - Mount your project directory to `/workspace` in the container
 - Mount your `~/.claude` config directory so credentials persist
@@ -90,7 +81,7 @@ nvim src/main.py
 
 ## Workflow
 
-1. **Terminal 1 (Docker)**: Run `./run-claude.sh /path/to/project` and then `claude`
+1. **Terminal 1 (Docker)**: Run `./claude-docker /path/to/project` and then `claude`
 2. **Terminal 2 (Laptop)**: Edit with `nvim` in your project directory
 3. Claude modifies files in the container
 4. Changes sync instantly via the mounted volume
@@ -101,7 +92,7 @@ nvim src/main.py
 - **Isolated Environment**: Claude only sees the mounted project directory
 - **No Host Access**: Your other files, credentials, and projects are invisible
 - **Persistent Credentials**: Login once, credentials stored in `~/.claude/`
-- **Easy Cleanup**: Remove container anytime with `docker rm claude-<project-name>`
+- **Easy Cleanup**: Container automatically removed on exit
 
 ## Container Management
 
@@ -111,18 +102,14 @@ The container uses `--rm` flag, so it automatically cleans up when you exit. No 
 
 Just run the script with a different path:
 ```bash
-./run-claude.sh ~/project-a  # Work on project A
+./claude-docker ~/project-a  # Work on project A
 # Exit when done (container auto-removed)
 
-./run-claude.sh ~/project-b  # Work on project B  
+./claude-docker ~/project-b  # Work on project B
 # Fresh container, different project mounted
 ```
 
-### Force Rebuild Image
-```bash
-docker rmi claude-code-dev
-./run-claude.sh /path/to/project  # Will rebuild automatically
-```
+All projects share the same credentials from `~/.claude/`, so you only authenticate once.
 
 ## Neovim Auto-Reload
 
@@ -144,9 +131,6 @@ autocmd FocusGained,BufEnter,CursorHold * checktime
 ```
 
 ## Troubleshooting
-
-### "Image not found" error
-The script will automatically build the image. Ensure `Dockerfile` is in the same directory.
 
 ### Authentication issues
 If Claude keeps asking to login, check that `~/.claude/.credentials.json` exists on your host.
@@ -173,12 +157,24 @@ Switching between projects is simple since each run gets a fresh container with 
 
 ```bash
 # Work on project A
-./run-claude.sh ~/project-a
+./claude-docker ~/project-a
 # ... do work, exit when done (container auto-removed)
 
 # Work on project B
-./run-claude.sh ~/project-b
+./claude-docker ~/project-b
 # ... fresh container with project-b mounted
 ```
 
 All projects share the same credentials from `~/.claude/`, so you only authenticate once.
+
+## For Maintainers: Building and Publishing the Image
+
+To build the image and push it to Docker Hub:
+
+```bash
+docker login
+chmod +x build-and-push.sh
+./build-and-push.sh
+```
+
+This builds the image from the local `Dockerfile` and pushes it to `tbalthazar/claude-code-dev` on Docker Hub.
