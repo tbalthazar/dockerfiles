@@ -44,7 +44,8 @@ claude
 ### Start Claude Code
 
 ```bash
-./claude-docker /path/to/your/project
+./claude-docker                    # use current directory
+./claude-docker /path/to/project   # use a specific directory
 ```
 
 This will:

@@ -13,14 +13,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# Check if project path argument is provided
-if [ -z "$1" ]; then
-    echo -e "${RED}Error: No project path provided${NC}"
-    echo "Usage: $0 /path/to/project"
-    exit 1
-fi
-
-PROJECT_PATH=$(realpath "$1")
+PROJECT_PATH=$(realpath "${1:-.}")
 
 # Verify project path exists
 if [ ! -d "$PROJECT_PATH" ]; then
