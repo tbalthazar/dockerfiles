@@ -53,6 +53,7 @@ This will:
 - Start a fresh container with `--rm` (auto-cleanup on exit)
 - Mount your project directory to `/workspace` in the container
 - Mount your `~/.claude` config directory so credentials persist
+- Mount your `~/.gitconfig` so git aliases and identity work inside the container
 - Start a bash shell in the container
 
 ### Inside the Container

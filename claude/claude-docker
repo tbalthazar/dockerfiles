@@ -56,6 +56,7 @@ docker run -it --rm \
     -v "$PROJECT_PATH:/workspace:rw" \
     -v "$CLAUDE_CONFIG_DIR:/home/user/.claude:rw" \
     -v "$CLAUDE_JSON_FILE:/home/user/.claude.json:rw" \
+    -v "$HOME/.gitconfig:/home/user/.gitconfig:ro" \
     -w /workspace \
     "$IMAGE_NAME"
 
