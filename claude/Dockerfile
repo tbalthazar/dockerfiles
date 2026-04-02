@@ -9,9 +9,12 @@ RUN apt-get update && \
     libgcc-s1 \
     libstdc++6 \
     bash \
-    pipx \
+    npm \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Install pyright globally (as root)
+RUN npm install -g pyright
 
 # Create a non-root user with a proper home directory
 RUN useradd -m -s /bin/bash user
@@ -19,9 +22,6 @@ RUN useradd -m -s /bin/bash user
 # Switch to the user and install Claude Code
 USER user
 WORKDIR /home/user
-
-# Install pyright
-RUN pipx install pyright
 
 # Install Claude Code - the script will create ~/.local/bin automatically
 RUN curl -fsSL https://claude.ai/install.sh | bash
