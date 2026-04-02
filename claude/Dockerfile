@@ -9,6 +9,7 @@ RUN apt-get update && \
     libgcc-s1 \
     libstdc++6 \
     bash \
+    pipx \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -19,9 +20,8 @@ RUN useradd -m -s /bin/bash user
 USER user
 WORKDIR /home/user
 
-# Add GitHub's host key (needed to update the plugin marketplace)
-RUN mkdir -p /home/user/.ssh && \
-       ssh-keyscan github.com >> /home/user/.ssh/known_hosts 2>/dev/null
+# Install pyright
+RUN pipx install pyright
 
 # Install Claude Code - the script will create ~/.local/bin automatically
 RUN curl -fsSL https://claude.ai/install.sh | bash
