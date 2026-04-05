@@ -17,22 +17,22 @@ RUN apt-get update && \
 RUN npm install -g pyright
 
 # Create a non-root user with a proper home directory
-RUN useradd -m -s /bin/bash user
+RUN useradd -m -s /bin/bash tb
 
 # Switch to the user and install Claude Code
-USER user
-WORKDIR /home/user
+USER tb
+WORKDIR /home/tb
 
 # Install Claude Code - the script will create ~/.local/bin automatically
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
 # Verify installation
-RUN ls -la /home/user/.local/bin/ && \
-    test -f /home/user/.local/bin/claude && \
+RUN ls -la /home/tb/.local/bin/ && \
+    test -f /home/tb/.local/bin/claude && \
     echo "Claude binary found successfully"
 
 # Add user's .local/bin to PATH
-ENV PATH="/home/user/.local/bin:${PATH}"
+ENV PATH="/home/tb/.local/bin:${PATH}"
 
 # Set working directory
 WORKDIR /workspace
