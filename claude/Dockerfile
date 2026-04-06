@@ -26,6 +26,10 @@ WORKDIR /home/tb
 # Install Claude Code - the script will create ~/.local/bin automatically
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
+# Install uv and ruff
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
+    /home/tb/.local/bin/uv tool install ruff
+
 # Verify installation
 RUN ls -la /home/tb/.local/bin/ && \
     test -f /home/tb/.local/bin/claude && \
