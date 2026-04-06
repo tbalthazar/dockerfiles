@@ -9,12 +9,8 @@ RUN apt-get update && \
     libgcc-s1 \
     libstdc++6 \
     bash \
-    npm \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# Install pyright globally (as root)
-RUN npm install -g pyright
 
 # Create a non-root user with a proper home directory
 RUN useradd -m -s /bin/bash tb
@@ -26,9 +22,8 @@ WORKDIR /home/tb
 # Install Claude Code - the script will create ~/.local/bin automatically
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
-# Install uv and ruff
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
-    /home/tb/.local/bin/uv tool install ruff
+# Install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Verify installation
 RUN ls -la /home/tb/.local/bin/ && \
