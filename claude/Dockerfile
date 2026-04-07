@@ -8,6 +8,7 @@ RUN apt-get update && \
     ca-certificates \
     libgcc-s1 \
     libstdc++6 \
+    npm \
     bash \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
