@@ -6,6 +6,12 @@ on:
     paths:
     - "claude/*"
 
+  # Run every Sunday at 23:00 UTC
+  # Cron format: minute hour day-of-month month day-of-week
+  # 0 23 * * 0  →  at 23:00, on Sunday (0), every month, every day-of-month
+  schedule:
+    - cron: "0 23 * * 0"
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
