@@ -19,7 +19,7 @@ A separate `claude-docker` launch script (in a separate repository) pulls and ru
 - `~/.cache/uv` so downloaded wheels and package metadata persist across container runs
 - `~/.local/share/uv` so `uv`-managed Python installations persist across container runs
 
-`uv` is the only dev tool installed globally. Project-specific tools (`ruff`, `pyright`, etc.) should be declared in the project's `pyproject.toml` and pinned in `uv.lock` — `uv` will download and cache them on first use via `uv run`.
+`uv` and `ansible-lint` (with `ansible-core`) are the only dev tools installed globally. Project-specific tools (`ruff`, `pyright`, etc.) should be declared in the project's `pyproject.toml` and pinned in `uv.lock` — `uv` will download and cache them on first use via `uv run`.
 
 ## For Maintainers: Building and Publishing the Image
 
