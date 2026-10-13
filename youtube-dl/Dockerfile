@@ -14,7 +14,8 @@ RUN mkdir -p ~/.local/bin \
   && chmod a+rx ~/.local/bin/yt-dlp
 
 # yt-dlp-ejs solves YouTube's JS challenges but needs an external JS runtime (Deno) on PATH to run
-RUN pip install --break-system-packages -U yt-dlp-ejs \
+# curl_cffi enables yt-dlp's target impersonation (--impersonate) support
+RUN pip install --break-system-packages -U yt-dlp-ejs curl_cffi \
   && curl -fsSL https://deno.land/install.sh | sh
 
 ENV PATH="/root/.local/bin:/root/.deno/bin:$PATH"
