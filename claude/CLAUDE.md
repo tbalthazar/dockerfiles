@@ -26,7 +26,7 @@ A separate `claude-docker` launch script (in a separate repository) pulls and ru
 The container runs as user `tb`. All home-directory paths inside the container are `/home/tb/`. The `ENV PATH` line in the Dockerfile adds `/home/tb/.local/bin` to `PATH`, which is where Claude Code, `uv`, and `ruff` binaries land.
 
 ### Installed tools
-`uv` is the only dev tool installed globally in the image (via the official installer, as `tb`).
+`uv` and `ansible-lint` are the only dev tools installed globally in the image (as `tb`). `uv` comes from the official installer; `ansible-lint` (with `ansible-core`) is installed via `uv tool install` into `/home/tb/.local/opt/`, outside the host-mounted `~/.local/share/uv`, so the mount does not hide it.
 
 Project-specific tools like `ruff` and `pyright` are not installed globally. Declare them as dev dependencies in the project's `pyproject.toml` and pin them in `uv.lock` — `uv` will download and cache them on first use:
 

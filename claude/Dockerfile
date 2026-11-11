@@ -26,13 +26,22 @@ RUN curl -fsSL https://claude.ai/install.sh | bash
 # Install uv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
+# Install ansible-lint (pulls in ansible-core) as a uv tool.
+# The tool venv and its Python live outside ~/.local/share/uv, which is
+# mounted from the host at runtime and would otherwise shadow them.
+RUN UV_TOOL_DIR=/home/tb/.local/opt/uv-tools \
+    UV_PYTHON_INSTALL_DIR=/home/tb/.local/opt/uv-python \
+    /home/tb/.local/bin/uv tool install ansible-lint
+
 # Verify installation
 RUN ls -la /home/tb/.local/bin/ && \
     test -f /home/tb/.local/bin/claude && \
-    echo "Claude binary found successfully"
+    echo "Claude binary found successfully" && \
+    /home/tb/.local/bin/ansible-lint --version
 
-# Add user's .local/bin to PATH
-ENV PATH="/home/tb/.local/bin:${PATH}"
+# Add user's .local/bin to PATH, plus the ansible-lint venv so ansible-lint
+# finds ansible-playbook and friends without warning
+ENV PATH="/home/tb/.local/bin:/home/tb/.local/opt/uv-tools/ansible-lint/bin:${PATH}"
 
 # Set working directory
 WORKDIR /workspace
